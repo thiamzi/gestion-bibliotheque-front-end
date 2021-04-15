@@ -1,0 +1,81 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+        <div class="col-11 align-self-center">
+            <h4 id="themtxt" class="page-title mb-0">Gestion categories</h4>
+        </div>
+        <div class="col-1 align-self-center">
+            <i (click)="open2(content2)" class="ti-plus"></i>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="card " *ngFor="let categorie of categories">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-10 ">
+                            <h3 class="card-title ">{{ categorie.nom }}</h3>
+                        </div>
+                        <div class="col-1 ">
+                            <i class="ti-pencil-alt" (click)="open1(content1 , categorie)"></i>
+                        </div>
+                        <div class="col-1 ">
+                            <i class="ti-trash" (click)="delete(categorie)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content1 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Edit category</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+      <span aria-hidden="true ">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form" (ngSubmit)="editCategorie()">
+            <div class="form-group ">
+                <span class="label label-primary">Nom categorie</span>
+                <input class="form-control form-control-lg" formControlName="nom" type="text">
+                <div *ngIf="form.get('nom').invalid && form.get('nom').dirty">
+                    <small *ngIf="form.get('nom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('nom').errors?.maxlength">La taille maximum est de 20</small>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid" class="btn btn-outline-dark ">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " id="modal-basic-title ">Add Category</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+      <span aria-hidden="true ">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form" (ngSubmit)="addCategorie()">
+            <div class="form-group ">
+                <span class="label label-primary">Nom categorie</span>
+                <input class="form-control form-control-lg" formControlName="nom" type="text">
+                <div *ngIf="form.get('nom').invalid && form.get('nom').dirty">
+                    <small *ngIf="form.get('nom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('nom').errors?.maxlength">La taille maximum est de 20</small>
+                    <small *ngIf="form.get('nom').errors?.pattern">Le nom n'est valide</small>
+                    <small *ngIf="form.get('nom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid" class="btn btn-outline-dark ">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

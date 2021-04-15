@@ -1,0 +1,95 @@
+i {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: large;
+}
+
+#them div div i {
+    color: white;
+}
+
+p {
+    font-size: 14px;
+}
+
+h5 {
+    font-weight: bold;
+}
+
+li {
+    font-size: 14px;
+}
+
+.ng-valid:is(input) {
+    border-left: 5px solid #42A948;
+    /* green */
+}
+
+.ng-invalid:not(form) {
+    border-left: 5px solid rgb(219, 68, 68);
+    /* red */
+}
+
+#btn button {
+    width: 40%;
+    margin-top: 10px;
+}
+
+.card {
+    background: #fff;
+    margin-bottom: 30px;
+    transition: .5s;
+    border: 0;
+    border-radius: .55rem;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.card .body {
+    font-size: 14px;
+    color: #424242;
+    padding: 20px;
+    font-weight: 400;
+}
+
+.card .header {
+    color: #424242;
+    padding: 20px;
+    position: relative;
+    box-shadow: none;
+}
+
+.card .header h2 {
+    font-size: 15px;
+    color: #757575;
+    position: relative;
+}
+
+.card .header h2:before {
+    background: #a27ce6;
+}
+
+.card .header h2::before {
+    position: absolute;
+    width: 20px;
+    height: 1px;
+    left: 0;
+    top: -20px;
+    content: '';
+}
+
+i {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: large;
+}
+
+small {
+    color: rgb(219, 68, 68);
+    /* red */
+}
+
+#sm {
+    color: #424242;
+}

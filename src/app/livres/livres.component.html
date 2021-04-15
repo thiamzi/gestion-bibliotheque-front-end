@@ -1,0 +1,261 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+
+        <div class="col-md-4 col-sm-5 col-xs-12 align-self-center">
+            <form id='res' #searchForm="ngForm">
+                <input class="form-control form-control-sm" placeholder="rechercher livre..." (input)="rechercherLivre($event)" #cle type="text">
+            </form>
+        </div>
+        <div class="col-md-7 col-sm-1 col-xs-1 align-self-center">
+        </div>
+        <div class="col-md-1 col-sm-1 col-xs-1 align-self-center">
+            <i (click)="open1(content1)" class="ti-plus"></i>
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-3 col-sm-6 col-xs-12" *ngFor="let livre of livres">
+            <div class="boxs project_widget">
+                <div class="pw_img" style="cursor: pointer; " (click)="open2(content2 , livre)">
+                    <img class="img-responsive" height="320px" [src]="livre.imageCle.url" alt="About the image">
+                </div>
+                <div class="pw_content">
+                    <div class="pw_header" style="cursor: pointer;" (click)="open2(content2 , livre)">
+                        <h6 id="titre">
+                            <p>{{livre.titre}}</p>
+                        </h6>
+                        <small class="text-muted">{{ livre.auteur }}</small>
+                    </div>
+                    <div id="lv" class="pw_meta row">
+                        <div class="col-4 align-self-center" (click)="open3(content3 , livre)">
+                            <button class="btn btn-outline-dark"><i class="ti-pencil-alt"></i></button>
+                        </div>
+                        <div class="col-4 align-self-center" (click)="open4(content4 , livre)">
+                            <button class="btn btn-outline-dark"><i class="ti-pencil-alt" ></i></button>
+
+                        </div>
+                        <div class="col-4 align-self-center">
+                            <button class="btn btn-outline-dark" (click)="supprimer(livre)"><i class="ti-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content1 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Ajouter livre</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+    <span aria-hidden="true ">&times;</span>
+  </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form" (ngSubmit)="ajouter()">
+            <div class="form-group ">
+                <span class="label label-primary">Titre</span>
+                <input class="form-control form-control-lg" type="text" formControlName="titre" required>
+                <div *ngIf="form.get('titre').invalid && form.get('titre').dirty">
+                    <small *ngIf="form.get('titre').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('titre').errors?.maxlength">La taille maximum est de 45</small>
+                    <small *ngIf="form.get('titre').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Auteur</span>
+                <input class="form-control form-control-lg" type="text" formControlName="auteur" required>
+                <div *ngIf="form.get('auteur').invalid && form.get('auteur').dirty">
+                    <small *ngIf="form.get('auteur').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('auteur').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form.get('auteur').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Description</span>
+                <textarea class="form-control form-control-lg" type="text" formControlName="description" required></textarea>
+                <div *ngIf="form.get('description').invalid && form.get('description').dirty">
+                    <small *ngIf="form.get('description').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('description').errors?.maxlength">La taille maximum est de 255</small>
+                    <small *ngIf="form.get('description').errors?.minlength">La taille minimun est de 60</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Nombre exemplaires</span>
+                <input class="form-control form-control-lg" type="number" formControlName="exmplaire" required>
+                <div *ngIf="form.get('exmplaire').invalid && form.get('exmplaire').dirty">
+                    <small *ngIf="form.get('exmplaire').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('exmplaire').errors?.min">Le nombre doit etre superieur à zero</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="label label-primary">Categorie</span>
+                <Select class="form-control form-control-lg" (change)="changeCategorie($event)" required>
+                  <option >Choisir une categorie</option>
+                  <option *ngFor="let categorie of categories" >{{categorie.nom}}</option>
+              </Select>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Photo livre</span>
+                <div class="custom-file ">
+                    <input type="file" (change)="selectFile($event)" class="custom-file-input" formControlName="image" id="inputGroupFile01" accept="image/*" required>
+                    <label class="custom-file-label " for="inputGroupFile01 ">photo livre</label>
+                    <div *ngIf="form.get('image').invalid">
+                        <small *ngIf="form.get('image').errors?.required">Le champ est requis</small>
+                    </div>
+                    <div *ngIf="currentFileUpload" class="progress mt-2">
+                        <div style="background-color: #42A948;" class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
+                            {{ percentage }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid || form.get('categorieIdcategorie').value==0" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="col-md-11 col-sm-12 col-xs-12 modal-title" style="font-weight: bold; " id="modal-basic-title ">{{ livre.titre }}
+            <p>{{ livre.auteur }}</p>
+        </h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') "><span
+      aria-hidden="true ">&times;</span></button>
+    </div>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                <div class="boxs project_widget">
+                    <div class="pw_img ">
+                        <img height="400px" class="img-responsive " [src]="livre.imageCle.url" alt="Image du livre">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-6 col-xs-12 ">
+                <div class="boxs project_widget ">
+                    <div class="my-text">
+                        <p>
+                            {{livre.description}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                <div class="boxs project_widget ">
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Categorie : {{name_categorie}}</h6>
+                            <small id="sm"><b> ajoute le {{livre.dateCreation | date : 'd/M/yyyy HH:mm:ss'  }}</b></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="boxs project_widget">
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Nombre de fois emprunte : {{ livre.empruntList.length }}</h6>
+                            <small id="sm"><b>Nombre exemplaires: {{livre.exmplaire}} - disponoibles : {{livre.nbdisponible}}</b></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #content3 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Editer livre</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+    <span aria-hidden="true ">&times;</span>
+  </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form" (ngSubmit)="modifier()">
+            <div class="form-group ">
+                <span class="label label-primary">Titre</span>
+                <input class="form-control form-control-lg" type="text" formControlName="titre" required>
+                <div *ngIf="form.get('titre').invalid && form.get('titre').dirty">
+                    <small *ngIf="form.get('titre').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('titre').errors?.maxlength">La taille maximum est de 45</small>
+                    <small *ngIf="form.get('titre').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Auteur</span>
+                <input class="form-control form-control-lg" type="text" formControlName="auteur" required>
+                <div *ngIf="form.get('auteur').invalid && form.get('auteur').dirty">
+                    <small *ngIf="form.get('auteur').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('auteur').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form.get('auteur').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Description</span>
+                <textarea class="form-control form-control-lg" type="text" formControlName="description" required></textarea>
+                <div *ngIf="form.get('description').invalid && form.get('description').dirty">
+                    <small *ngIf="form.get('description').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('description').errors?.maxlength">La taille maximum est de 1000</small>
+                    <small *ngIf="form.get('description').errors?.minlength">La taille minimun est de 60</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Nombre exemplaires</span>
+                <input class="form-control form-control-lg" type="number" formControlName="exmplaire" required>
+                <div *ngIf="form.get('exmplaire').invalid && form.get('exmplaire').dirty">
+                    <small *ngIf="form.get('exmplaire').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('exmplaire').errors?.min">Le nombre doit etre superieur à zero</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="label label-primary">Categorie</span>
+                <Select class="form-control form-control-lg" (change)="changeCategorie($event)">
+              <option >{{name_categorie}}</option>
+              <option *ngFor="let categorie of categories" >{{categorie.nom}}</option>
+          </Select>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content4 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Changer photo livre</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+  <span aria-hidden="true ">&times;</span>
+</button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form1" (ngSubmit)="modifierLivreImage()">
+            <div class="form-group ">
+                <span class="label label-primary">Photo livre</span>
+                <div class="custom-file ">
+                    <input type="file" (change)="selectFile($event)" class="custom-file-input" formControlName="image" id="inputGroupFile01" required>
+                    <label class="custom-file-label" for="inputGroupFile01 ">Ajouter l'image</label>
+                    <div *ngIf="form1.get('image').invalid">
+                        <small *ngIf="form1.get('image').errors?.required">Le champ est requis</small>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currentFileUpload" class="progress mt-2">
+                <div style="background-color: #42A948;" class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
+                    {{ percentage }}%
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form1.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

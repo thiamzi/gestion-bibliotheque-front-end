@@ -1,0 +1,119 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+        <div class="col-11 align-self-center">
+            <h4 id="themtxt" class="page-title mb-0">Gestion agents </h4>
+        </div>
+        <div class="col-1 align-self-center">
+            <i class="ti-plus" (click)="open1(content1)"></i>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" *ngFor="let agent of agents">
+            <div class="card ">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-10 ">
+                            <h3 class="card-title ">{{ agent.prenom }} {{ agent.nom }}</h3>
+                            <small>{{agent.user.email}}</small>
+                        </div>
+                        <div class="col-1 ">
+                            <i class="ti-pencil-alt" (click)="open2(content2 , agent)"></i>
+                        </div>
+                        <div class="col-1 ">
+                            <i class="ti-trash" (click)="deleteAgent(agent.userIduser)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content1 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Ajouter agent</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+    <span aria-hidden="true ">&times;</span>
+  </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form" (ngSubmit)="addAgent()">
+            <div class="form-group ">
+                <span class="label label-primary">Photo carte</span>
+                <input class="form-control form-control-lg" type="text" formControlName="nom" required>
+                <div *ngIf="form.get('nom').invalid && form.get('nom').dirty">
+                    <small *ngIf="form.get('nom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('nom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form.get('nom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Photo carte</span>
+                <input class="form-control form-control-lg" type="text" formControlName="prenom" required>
+                <div *ngIf="form.get('prenom').invalid && form.get('prenom').dirty">
+                    <small *ngIf="form.get('prenom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form.get('prenom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form.get('prenom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Adresse email</span>
+                <input class="form-control form-control-lg" type="email" formControlName="email" required/>
+                <div *ngIf="form.get('email').invalid && form.get('email').dirty">
+                    <small *ngIf="form.get('email').errors?.email">L'adresse email n'est pas valide</small>
+                    <small *ngIf="form.get('email').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Editer agent</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+  <span aria-hidden="true ">&times;</span>
+</button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form1" (ngSubmit)="editAgent()">
+            <div class="form-group ">
+                <span class="label label-primary">Nom</span>
+                <input class="form-control form-control-lg" type="text" formControlName="nom" required>
+                <div *ngIf="form1.get('nom').invalid && form1.get('nom').dirty">
+                    <small *ngIf="form1.get('nom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form1.get('nom').errors?.pattern">Le nom n'est valide</small>
+                    <small *ngIf="form1.get('nom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form1.get('nom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Prenom</span>
+                <input class="form-control form-control-lg" type="text" formControlName="prenom" required>
+                <div *ngIf="form1.get('prenom').invalid && form1.get('prenom').dirty">
+                    <small *ngIf="form1.get('prenom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form1.get('prenom').errors?.pattern">Le prenom n'est valide</small>
+                    <small *ngIf="form1.get('prenom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form1.get('prenom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Adresse email</span>
+                <input class="form-control form-control-lg" type="email" formControlName="email" required/>
+                <div *ngIf="form1.get('email').invalid && form1.get('email').dirty">
+                    <small *ngIf="form1.get('email').errors?.pattern">L'adresse email n'est pas valide</small>
+                    <small *ngIf="form1.get('email').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form1.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

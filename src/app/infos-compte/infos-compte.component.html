@@ -1,0 +1,186 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+        <div class="col-10 align-self-center">
+            <h4 id="themtxt" class="page-title mb-0">Informations compte</h4>
+        </div>
+        <div *ngIf="user1.isEtudiant" class="col-1 align-self-center" (click)="open4(content4)">
+            <i class="ti-pencil-alt"></i>
+        </div>
+        <div class="col-1 align-self-center" (click)="open2(content2)">
+            <i class="ti-pencil-alt"></i>
+        </div>
+    </div>
+</div>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container bootstrap snippets bootdeys">
+    <div class="row" id="user-profile">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="main-box clearfix">
+
+                <div class="row profile-user-info">
+                    <div class="col-lg-1q col-md-12 col-sm-12">
+                        <div class="profile-user-details clearfix">
+                            <span class="label label-primary">Nom</span>
+                            <input *ngIf="!user1.isAdmin" class="form-control form-control-lg" [disabled]="true" [value]="user.nom" type="text">
+                            <input *ngIf="user1.isAdmin" class="form-control form-control-lg" [disabled]="true" value="Admin" s type="text">
+                        </div>
+
+                        <div class="profile-user-details clearfix">
+                            <span class="label label-primary">Prenom</span>
+                            <input *ngIf="!user1.isAdmin" class="form-control form-control-lg" [disabled]="true" [value]="user.prenom" type="text">
+                            <input *ngIf="user1.isAdmin" class="form-control form-control-lg" [disabled]="true" value="Admin" type="text">
+                        </div>
+
+                        <div *ngIf="user1.isEtudiant" class="profile-user-details clearfix">
+                            <span class="label label-primary">Numero Dossier</span>
+                            <input class="form-control form-control-lg" [value]="user.numeroDossier" [disabled]="true" type="text">
+                        </div>
+
+                        <div class="profile-user-details clearfix">
+                            <span class="label label-primary">Adresse email</span>
+                            <input class="form-control form-control-lg" [value]="user1.sub" [disabled]="true" type="text">
+                        </div>
+
+                        <div *ngIf="user1.isEtudiant" class="profile-user-details clearfix">
+                            <span class="label label-primary">Date de naissance</span>
+                            <input class="form-control form-control-lg" [value]="user.dateNaissance | date: 'd/M/yyyy'" [disabled]="true" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs-wrapper profile-tabs">
+                    <ul class="nav nav-tabs">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Editer infos</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+        <span aria-hidden="true ">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form1" (ngSubmit)="editUser()" *ngIf="mode1 && (user1.isBibliothecaire || (!verifEtudiant && user1.isEtudiant))">
+            <div class="form-group ">
+                <span class="label label-primary">Nom</span>
+                <input class="form-control form-control-lg" type="text" formControlName="nom" required>
+                <div *ngIf="form1.get('nom').invalid && form1.get('nom').dirty">
+                    <small *ngIf="form1.get('nom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form1.get('nom').errors?.pattern">Le nom n'est valide</small>
+                    <small *ngIf="form1.get('nom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form1.get('nom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Prenom</span>
+                <input class="form-control form-control-lg" type="text" formControlName="prenom" required>
+                <div *ngIf="form1.get('prenom').invalid && form1.get('prenom').dirty">
+                    <small *ngIf="form1.get('prenom').errors?.required">Le champ est requis</small>
+                    <small *ngIf="form1.get('prenom').errors?.pattern">Le prenom n'est valide</small>
+                    <small *ngIf="form1.get('prenom').errors?.maxlength">La taille maximum est de 30</small>
+                    <small *ngIf="form1.get('prenom').errors?.minlength">La taille minimun est de 2</small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="user1.isEtudiant">
+                <span class="label label-primary">Numero Dossier</span>
+                <input class="form-control form-control-lg" maxlength="11" type="text" formControlName="numeroDossier" required>
+                <div *ngIf="form1.get('numeroDossier').invalid && form1.get('numeroDossier').dirty">
+                    <small *ngIf="form1.get('numeroDossier').errors?.pattern">Le numero de dossier doit etre compose de 11 chifres</small>
+                    <small *ngIf="form1.get('numeroDossier').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="user1.isEtudiant">
+                <span class="label label-primary">Date de naissance</span>
+                <input class="form-control form-control-lg" type="date" formControlName="dateNaissance" required>
+                <div *ngIf="form1.get('dateNaissance').invalid && form1.get('dateNaissance').dirty">
+                    <small *ngIf="form1.get('dateNaissance').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+            <div class="form-group ">
+                <span class="label label-primary">Adresse email</span>
+                <input class="form-control form-control-lg" type="email" formControlName="email" required />
+                <div *ngIf="form1.get('email').invalid && form1.get('email').dirty">
+                    <small *ngIf="form1.get('email').errors?.pattern">L'adresse email n'est pas valide</small>
+                    <small *ngIf="form1.get('email').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <span class="label label-primary">Confirmer mot de passe</span>
+                <input class="form-control form-control-lg" type="password" formControlName="mdp" required />
+                <div *ngIf="form1.get('mdp').invalid && form1.get('mdp').dirty">
+                    <small *ngIf="form1.get('mdp').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+            <div class="form-group" [hidden]="valid"><small>Mot de passe incorrect</small></div>
+            <div id="btn" *ngIf="!user1.isBibliothecaire">
+                <button type="submit" [disabled]="form1.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+            <div id="btn" *ngIf="user1.isBibliothecaire">
+                <button type="submit" [disabled]="form1.get('email').invalid && form1.get('nom').invalid && form1.get('prenom').invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+            <div id="btn">
+                <button class="btn btn-outline-dark" (click)="changermode1()"> <i style="color: rgb(71, 70, 70); " class="ti-pencil-alt"></i> password</button>
+            </div>
+        </form>
+
+        <form [formGroup]="form" (ngSubmit)="updatePassword()" *ngIf="mode2">
+            <div class="form-group ">
+                <span class="label label-primary">Mot de passe</span>
+                <input class="form-control form-control-lg" type="password" formControlName="password" required/>
+                <div *ngIf="form.get('password').invalid && form.get('password').dirty">
+                    <small *ngIf="form.get('password').errors?.pattern">Le mot de passe doit avoir au moins 8 caracteres</small>
+                    <small *ngIf="form.get('password').errors?.required">Le champ est requis</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span class="label label-primary">Confirmer mot de passe</span>
+                <input class="form-control form-control-lg" type="password" formControlName="confirm" placeholder="Confirmer votre mot de passe" required/>
+                <div *ngIf="form.get('confirm').invalid && form.get('confirm').dirty">
+                    <small *ngIf="form.get('confirm').errors">Les mots de passe ne correspondent pas</small>
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+            <div id="btn" *ngIf="user1.isBibliothecaire || (!verifEtudiant && user1.isEtudiant)">
+                <button class="btn btn-outline-dark" (click)="changermode2()"> <i style="color: rgb(71, 70, 70); " class="ti-pencil-alt"></i> infos</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #content4 let-modal>
+    <div class="modal-header ">
+        <h4 class="modal-title " style="font-weight: bold; " id="modal-basic-title ">Changer photo carte</h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') ">
+<span aria-hidden="true ">&times;</span>
+</button>
+    </div>
+    <div class="modal-body ">
+        <form [formGroup]="form1" (ngSubmit)="modifierCarteImage()">
+            <div class="form-group ">
+                <div class="custom-file ">
+                    <span class="label label-primary">Photo carte</span>
+                    <input type="file" (change)="selectFile($event)" class="custom-file-input" formControlName="image" id="inputGroupFile01" required>
+                    <div *ngIf="form1.get('image').invalid">
+                        <small *ngIf="form1.get('image').errors?.required">Le champ est requis</small>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currentFileUpload" class="progress mt-2">
+                <div style="background-color: #42A948;" class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: percentage + '%' }">
+                    {{ percentage }}%
+                </div>
+            </div>
+            <div id="btn">
+                <button type="submit" [disabled]="form1.invalid" class="btn btn-outline-dark">valider</button>
+            </div>
+        </form>
+    </div>
+</ng-template>

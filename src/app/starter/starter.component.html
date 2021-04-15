@@ -1,0 +1,102 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+        <div class="col-md-6 col-sm-4 col-xs-10 align-self-center">
+            <h4 *ngIf="titre" id="themtxt" class="page-title mb-0">{{categorie.nom}} </h4>
+            <h4 *ngIf="!titre" id="themtxt" class="page-title mb-0">Tous les livres </h4>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12 align-self-center">
+            <form id='res' #searchForm="ngForm">
+                <Select class="form-control form-control-sm" (change)="livresCategorie($event)">
+                    <option>tous les livres</option>
+                    <option *ngFor="let categorie of categories" >{{categorie.nom}}</option>
+                </Select>
+            </form>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-12 align-self-center">
+            <form id='res' #searchForm="ngForm">
+                <input class="form-control form-control-sm" placeholder="rechercher livre..." (input)="rechercherLivre($event)" #cle type="text">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-3 col-sm-6 col-xs-8" *ngFor="let livre of livres">
+            <div class="boxs project_widget">
+                <div class="pw_img" style="cursor: pointer; " (click)="open2(content2 , livre)">
+                    <img class="img-responsive" height="320px" [src]="livre.imageCle.url" alt="About the image">
+                </div>
+                <div class="pw_content">
+                    <div class="pw_header" style="cursor: pointer;" (click)="open2(content2 , livre)">
+                        <h6 id="titre">
+                            <p>{{livre.titre}}</p>
+                        </h6>
+                        <small class="text-muted">{{ livre.auteur }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="col-md-11 col-sm-12 col-xs-12 modal-title" style="font-weight: bold; " id="modal-basic-title ">{{ livre.titre }}
+            <p>{{ livre.auteur }}</p>
+        </h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') "><span
+        aria-hidden="true ">&times;</span></button>
+    </div>
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-md-5 col-sm-6 col-xs-12">
+                <div class="boxs project_widget">
+                    <div class="pw_img ">
+                        <img height="400px" class="img-responsive " [src]="livre.imageCle.url" alt="Image du livre">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-6 col-xs-12 ">
+                <div class="boxs project_widget ">
+                    <div class="my-text">
+                        <p>
+                            {{livre.description}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                <div class="boxs project_widget ">
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Categorie : {{categorie.nom}}</h6>
+                            <small id="sm"><b> ajoute le {{livre.dateCreation | date : 'd/M/yyyy HH:mm:ss'  }}</b></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="boxs project_widget">
+                    <div class="pw_content">
+                        <div class="pw_header">
+                            <h6>Nombre de fois emprunte : {{ livre.empruntList.length }}</h6>
+                            <small id="sm"><b>Nombre exemplaires: {{livre.exmplaire}} - disponoibles : {{livre.nbdisponible}}</b></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="isEtudiant() && !etudiant.valide" class="modal-footer">
+            <div class="pw_header">
+                <small>Votre compte n'est pas encore validé : vous ne pouvez pas encore faire d'emprunt ou de reservation.</small>
+            </div>
+        </div>
+        <div *ngIf="isEtudiant() && etudiant.valide" class="modal-footer">
+            <button class="btn btn-primary" (click)="emprunter(livre)">Emprunter</button>
+            <button class="btn btn-primary" (click)="resrever(livre)">Reserver</button>
+        </div>
+    </div>
+</ng-template>

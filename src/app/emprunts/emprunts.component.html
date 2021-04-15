@@ -1,0 +1,178 @@
+<div id="them" class="page-breadcrumb">
+    <div class="row">
+        <div class="col-md-10 col-sm-6 col-xs-12 align-self-center">
+            <h4 id="themtxt" class="page-title mb-0">Gestion prets </h4>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-12 align-self-center">
+            <form id='res' #searchForm="ngForm">
+                <input class="form-control form-control-sm" placeholder="numero emprunt" maxlength="9" #cle (input)="rechercherEmprunt($event)" type="text">
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div style="background-color: #eef5f9;">
+            <div>
+                <ngb-tabset justify="fill">
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>Nouveaux</b>
+                            <div *ngIf="empruntsNouveaux.length > 0" class="notify setpos"><span class="heartbit"></span> <span class="number"></span></div>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="container" style="margin-top: 3%;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="card " *ngFor="let emprunt of empruntsNouveaux">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <h3 class="card-title ">N° {{emprunt.numeroEmprunt}}</h3>
+                                                        <small>{{emprunt.dateDebut | date : 'd/M/yyyy' }}</small>
+                                                    </div>
+                                                    <div class="col-1 ">
+                                                        <i class="ti-eye" (click)="open2(content2 , emprunt)"></i>
+                                                    </div>
+                                                    <div class="col-1" *ngIf="(emprunt.delai_recup | date : 'd/M/yyyy') < (date| date:'d/M/yyyy')">
+                                                        <i (click)="SupprimerEmprunt(emprunt.numeroEmprunt , emprunt.livreIdlivre , emprunt.etudiantUserIduser)" class="ti-trash"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>Prets en cours</b>
+                            <div *ngIf="empruntsCours.length > 0" class="notify setpos"><span class="heartbit"></span> <span class="number"></span></div>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="container" style="margin-top: 3%;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="card " *ngFor="let emprunt of empruntsCours">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-11">
+                                                        <h3 class="card-title ">N° {{emprunt.numeroEmprunt}}</h3>
+                                                        <small>{{emprunt.dateDebut | date : 'd/M/yyyy' }}</small>
+                                                    </div>
+                                                    <div class="col-1 ">
+                                                        <i class="ti-eye" (click)="open2(content2 , emprunt)"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>retards</b>
+                            <div *ngIf="empruntsRetards.length > 0" class="notify setpos"><span class="heartbit"></span> <span class="number"></span></div>
+                        </ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="container" style="margin-top: 3%;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="card " *ngFor="let emprunt of empruntsRetards">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-11">
+                                                        <h3 class="card-title ">N° {{emprunt.numeroEmprunt}}</h3>
+                                                        <small>{{emprunt.dateDebut | date : 'd/M/yyyy' }}</small>
+                                                    </div>
+                                                    <div class="col-1 ">
+                                                        <i class="ti-eye" (click)="open2(content2 , emprunt)"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab>
+                        <ng-template ngbTabTitle><b>Prets regles</b></ng-template>
+                        <ng-template ngbTabContent>
+                            <div class="container" style="margin-top: 3%;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="card " *ngFor="let emprunt of empruntsRegles">
+                                            <div class="card-body ">
+                                                <div class="row">
+                                                    <div class="col-11">
+                                                        <h3 class="card-title ">N° {{emprunt.numeroEmprunt}}</h3>
+                                                        <small>{{emprunt.dateDebut | date : 'd/M/yyyy' }}</small>
+                                                    </div>
+                                                    <div class="col-1 ">
+                                                        <i class="ti-eye" (click)="open2(content2 , emprunt)"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content2 let-modal>
+    <div class="modal-header ">
+        <h4 class="col-md-11 col-sm-12 col-xs-12 modal-title" style="font-weight: bold; " id="modal-basic-title ">N° {{ emprunt.numeroEmprunt }}
+            <p>
+                <small>Date Debut : {{emprunt.dateDebut | date : 'd/M/yyyy'}} - </small>
+                <small *ngIf="!emprunt.confirmer"> - Delai recuperation : {{emprunt.delai_recup | date : 'd/M/yyyy' }}</small>
+                <small>Date Fin : {{emprunt.dateFin | date : 'd/M/yyyy'}} </small>
+                <small *ngIf="emprunt.regle"> - Date Remise : {{emprunt.dateremise | date : 'd/M/yyyy' }}</small>
+            </p>
+
+        </h4>
+        <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') "><span
+      aria-hidden="true ">&times;</span></button>
+    </div>
+    <div class="container-fluid">
+        <div class="row clearfix justify-content-center">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="boxs project_widget">
+                    <div class="pw_img">
+                        <img height="400px" class="img-responsive" [src]="livre.imageCle.url" alt="Image du livre">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
+            <div class="boxs project_widget ">
+                <div class="pw_content">
+                    <div class="pw_header">
+                        <h6>Etudiant : {{ etudiant.prenom }} {{ etudiant.nom }}</h6>
+                        <small>N° Dossier : {{ etudiant.numeroDossier }}</small>
+                    </div>
+                </div>
+                <div class="pw_content">
+                    <div class="pw_header">
+                        <h6>Livre : {{livre.titre}}</h6>
+                        <small>Auteur : {{ livre.auteur}}</small>
+                    </div>
+                </div>
+                <div id="btn" *ngIf="!emprunt.confirmer && !user.isBibliothecaire">
+                    <button class="btn btn-outline-dark" (click)="confirmerEmprunt(emprunt)">confirmer</button>
+                </div>
+                <div id="btn" *ngIf="emprunt.confirmer && !emprunt.regle && !user.isBibliothecaire">
+                    <button class="btn btn-outline-dark" (click)="reglerEmprunt(emprunt  , livre)">regler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
