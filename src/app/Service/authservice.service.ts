@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { User } from '../modeles/user'
 import { environment } from 'src/environments/environment';
 
 export interface Userdetails {
@@ -81,7 +80,7 @@ export class AuthserviceService {
   public decoonexion(): void {
     this.token = '';
     window.sessionStorage.removeItem('usertoken');
-    this.router.navigateByUrl('/accueil');
+    this.router.navigateByUrl('/login');
   }
 
 }

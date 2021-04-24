@@ -30,13 +30,6 @@ export class MesEmpruntsComponent implements OnInit {
     nom: "",
     prenom: "",
     dateNaissance: null,
-    imageCle: {
-      cle: 0,
-      nom: "",
-      url: "",
-      file: null
-    },
-    valide: null,
     dateCreation: null,
     user: null,
     empruntList: null,
@@ -101,7 +94,6 @@ export class MesEmpruntsComponent implements OnInit {
             if (this.etudiant.empruntList[i].regle == false) {
               this.empruntCours = this.etudiant.empruntList[i];
               this.etudiant.reservationList.splice(i, 1)
-              console.log(this.empruntCours);
             }
           }
           if (this.empruntCours != null) {

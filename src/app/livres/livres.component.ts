@@ -41,6 +41,7 @@ export class LivresComponent implements OnInit {
   percentage: number;
   pathLivres = '/livres';
   livre: Livre = null;
+  submit : boolean = false;
 
   constructor(private modal: ModalService, private build: FormBuilder, private data: DatabaseService, private uploadService: FirebaseService) {
     this.subtitle = 'This is some text within a card block.';
@@ -126,11 +127,13 @@ export class LivresComponent implements OnInit {
 
   //selection de categorie-------------------------------------------------------------------------------------------------------
   changeCategorie(e) {
+    this.submit = false;
     this.categories.forEach((categorie) => {
       if (categorie.nom === e.target.value) {
         this.form.get('categorieIdcategorie').setValue(categorie.idcategorie, {
           onlySelf: true
         })
+        this.submit = true
       }
     })
   }

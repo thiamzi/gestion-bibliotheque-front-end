@@ -19,7 +19,7 @@ export class EtudiantGardeService implements CanActivate{
     if (this.authservice.Islogged() && ( this.user.isAdmin || this.user.isEtudiant)) {
       return true;
     } else {
-      this.router.navigateByUrl("/accueil");
+      this.router.navigateByUrl("/login");
       return false;
     }
   }

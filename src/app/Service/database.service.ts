@@ -127,13 +127,7 @@ export class DatabaseService {
 
   //-----------------------------------------------------------------------
 
-  public getAllEtudiantsTrue(): Observable<Etudiant[]> {
-    return this.http.get<Etudiant[]>(`${this.url}alletudiantstrue`);
-  }
 
-  public getAllEtudiantsFalse(): Observable<Etudiant[]> {
-    return this.http.get<Etudiant[]>(`${this.url}alletudiantsfalse`);
-  }
   public getAllEtudiants(): Observable<Etudiant[]> {
     return this.http.get<Etudiant[]>(`${this.url}alletudiants`);
   }
@@ -152,9 +146,6 @@ export class DatabaseService {
     return this.http.delete(`${this.url}deleteetudiant/${id}`);
   }
 
-  public validerEtudiant(etudiant): Observable<any> {
-    return this.http.put(`${this.url}validateetudiant`, etudiant);
-  }
   //-----------------------------------------------------------------------
 
   public getAllEmpruntsEncours(): Observable<Emprunt[]> {
@@ -233,8 +224,8 @@ public oneBiblio(id): Observable<Bibliothecaire> {
     return this.http.post(`${this.url}emailetudiant`, email);
   }
 
-  public sendEmailAgent(email : any): Observable<any> {
-    return this.http.post(`${this.url}emailagent`, email);
+  public sendEmailCompte(email : any): Observable<any> {
+    return this.http.post(`${this.url}emailcompte`, email);
   }
 
   public sendEmailLivre(email : any): Observable<any> {

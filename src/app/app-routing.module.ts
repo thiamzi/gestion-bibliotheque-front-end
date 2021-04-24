@@ -1,3 +1,4 @@
+import { ConnexionComponent } from './connexion/connexion.component';
 import { EtudiantGardeService } from './Service/garde/etudiant-garde.service';
 import { AgentGardeService } from './Service/garde/agent-garde.service';
 import { BibliothecaireGardeService } from './Service/garde/bibliothecaire-garde.service';
@@ -6,13 +7,20 @@ import { Routes } from '@angular/router';
 import { FullComponent } from './layouts/full/full.component';
 
 export const Approutes: Routes = [
+
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   {
-    path: '',
+    path: 'login', component : ConnexionComponent
+  },
+
+  {
+    path: 'biblio',
     component: FullComponent,
     children: [
-      { path: '', redirectTo: '/accueil', pathMatch: 'full' },
+
       {
-        path: 'accueil',
+        path: 'accueil',  canActivate : [GardeService],
         loadChildren: () => import('./starter/starter.module').then(m => m.StarterModule)
       },
       {
@@ -59,8 +67,10 @@ export const Approutes: Routes = [
 
     ]
   },
+
   {
     path: '**',
-    redirectTo: '/accueil'
+    redirectTo: '/login'
   }
+
 ];

@@ -3,7 +3,7 @@
         <li class="nav-devider"></li>
         <!-- First level menu -->
         <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/accueil'] " [routerLinkActive]="active!=true ? '' : 'active'">
+            <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/accueil'] " [routerLinkActive]="active!=true ? '' : 'active'">
                 <i class="mdi mdi-home"></i>
                 <span class="hide-menu">Acceuil
                 </span>
@@ -11,56 +11,56 @@
         </li>
         <div [hidden]="islogged()==false">
             <li class="sidebar-item">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/infos-compte']" [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/infos-compte']" [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="mdi mdi-account"></i>
                     <span class="hide-menu">Mon compte</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isBibliothecaire || user.isAdmin">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/livres']" [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/livres']" [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer livres</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isBibliothecaire || user.isAdmin">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/categories'] " [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/categories'] " [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer categories</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isBibliothecaire || user.isAdmin">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/agents'] " [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/agents'] " [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer agents</span>
                 </a>
             </li>
 
             <li class="sidebar-item" *ngIf="user.isBibliothecaire || user.isAdmin || user.isAgent">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/etudiants'] " [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/etudiants'] " [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer etudiants</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isAgent || user.isAdmin || user.isBibliothecaire">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/prets'] " [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/prets'] " [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer prets</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isAgent || user.isAdmin || user.isBibliothecaire">
-                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/reservations'] " [routerLinkActive]="active!=true ? '' : 'active'">
+                <a class="sidebar-link waves-effect waves-dark" [routerLink]=" ['/biblio/reservations'] " [routerLinkActive]="active!=true ? '' : 'active'">
                     <i class="ti-settings"></i>
                     <span class="hide-menu">Gerer reservations</span>
                 </a>
             </li>
             <li class="sidebar-item" *ngIf="user.isEtudiant || user.isAdmin">
-                <a class="sidebar-link waves-effect waves-dark " [routerLink]=" [ '/mes-emprunts'] " [routerLinkActive]="active!=true ? '' : 'active' ">
+                <a class="sidebar-link waves-effect waves-dark " [routerLink]=" ['/biblio/mes-emprunts'] " [routerLinkActive]="active!=true ? '' : 'active' ">
                     <i class="mdi mdi-view-list "></i>
                     <span class="hide-menu ">Mes emprunts</span>
                 </a>
             </li>
             <li class="sidebar-item " *ngIf="user.isEtudiant || user.isAdmin ">
-                <a class="sidebar-link waves-effect waves-dark " [routerLink]=" [ '/mes-reservations'] " [routerLinkActive]="active!=true ? '' : 'active' ">
+                <a class="sidebar-link waves-effect waves-dark " [routerLink]=" ['/biblio/mes-reservations'] " [routerLinkActive]="active!=true ? '' : 'active' ">
                     <i class="mdi mdi-view-list "></i>
                     <span class="hide-menu ">Mes reservations</span>
                 </a>

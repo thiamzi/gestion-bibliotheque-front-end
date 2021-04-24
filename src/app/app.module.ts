@@ -35,6 +35,7 @@ import { environment } from 'src/environments/environment';
 import { MesEmpruntsComponent } from './mes-emprunts/mes-emprunts.component';
 import { MesReservationsComponent } from './mes-reservations/mes-reservations.component';
 import { InfosCompteComponent } from './infos-compte/infos-compte.component';
+import { ConnexionComponent } from './connexion/connexion.component';
 
 
 
@@ -53,6 +54,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NavigationComponent,
     SidebarComponent,
     BreadcrumbComponent,
+    ConnexionComponent,
   ],
   imports: [
     CommonModule,

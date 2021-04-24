@@ -19,7 +19,7 @@ export class AdminGardeService  implements CanActivate{
     if (this.authservice.Islogged() && this.user.isAdmin) {
       return true;
     } else {
-      this.router.navigateByUrl("/accueil");
+      this.router.navigateByUrl("/login");
       return false;
     }
   }

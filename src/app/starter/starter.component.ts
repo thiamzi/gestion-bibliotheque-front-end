@@ -70,13 +70,6 @@ export class StarterComponent implements OnInit {
     nom: "",
     prenom: "",
     dateNaissance: null,
-    imageCle: {
-      cle: 0,
-      nom: "",
-      url: "",
-      file: null
-    },
-    valide: null,
     dateCreation: null,
     user: null,
     empruntList: null,
@@ -116,7 +109,6 @@ export class StarterComponent implements OnInit {
       "categorieIdcategorie": [0, Validators.required],
       "image": [''],
     })
-    console.log(this.auth.getUserdetails())
     if (this.auth.Islogged()) {
       if (this.auth.getUserdetails().isEtudiant) {
         this.onEtudiant();
@@ -163,7 +155,7 @@ export class StarterComponent implements OnInit {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
           let dateFin: Date = new Date;
           let dateDebut = dateFin;
-          dateFin.setHours(dateFin.getHours() + 24);
+          dateFin.setDate(dateFin.getDate() + 30);
           this.emprunt.dateFin = dateFin;
           dateFin.setDate(dateFin.getDate() + 3);
           this.emprunt.delai_recup = dateFin;
@@ -194,7 +186,7 @@ export class StarterComponent implements OnInit {
                 })
                 this.Model.objet = "Emprunt livre";
                 this.Model.destinataire = this.etudiant.user.email;
-                this.Model.message = "Vous venez de faire un emprunt du livre << "+ livre.titre +" >>> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
+                this.Model.message = "Vous venez de faire un emprunt du livre << "+ livre.titre +" >> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
                 this.Model.numero = this.emprunt.numeroEmprunt.toString();
                 this.data.sendEmailLivre(this.Model).subscribe(_ => {
                 this.data.editLivre(livre).subscribe(_ => {
@@ -256,7 +248,7 @@ export class StarterComponent implements OnInit {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
           let dateFin: Date = new Date;
-          dateFin.setHours(dateFin.getHours() + 240);
+          dateFin.setDate(dateFin.getDate() + 10);
           this.reservation.dateFin = dateFin;
           this.reservation.numeroReservation = this.data.genererNumero();
           livre.nbdisponible -= 1;
@@ -284,7 +276,7 @@ export class StarterComponent implements OnInit {
                 })
                 this.Model.objet = "Réservation livre"
                 this.Model.destinataire = this.etudiant.user.email;
-                this.Model.message = "Vous venez de faire une réservation du livre << "+ livre.titre +" >>> Vous avez 10 jours pour regler la réservation. Au dela du delai la réservqtion sera systematiquement annulée.";
+                this.Model.message = "Vous venez de faire une réservation du livre << "+ livre.titre +" >> Vous avez 10 jours pour regler la réservation. Au dela du delai la réservation sera systematiquement annulée.";
                 this.Model.numero = this.reservation.numeroReservation.toString();
                 this.data.sendEmailLivre(this.Model).subscribe(_ => {
                 this.data.editLivre(livre).subscribe(_ => {
@@ -378,6 +370,19 @@ export class StarterComponent implements OnInit {
   isEtudiant(): boolean {
     if (this.auth.Islogged()) {
       if (this.auth.getUserdetails().isEtudiant) {
+        return true;
+      }
+      return false;
+    }
+    else {
+      false;
+    }
+
+  }
+
+  isAdmin(): boolean {
+    if (this.auth.Islogged()) {
+      if (this.auth.getUserdetails().isAdmin) {
         return true;
       }
       return false;

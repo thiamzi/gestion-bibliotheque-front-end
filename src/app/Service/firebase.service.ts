@@ -1,5 +1,4 @@
 import { ModalService } from './modal.service';
-
 import { DatabaseService } from 'src/app/Service/database.service';
 import { Image } from '../modeles/image';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -8,7 +7,6 @@ import { finalize } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/database';
 import Swal from 'sweetalert2';
-import { User } from '../modeles/user';
 import { Livre } from '../modeles/livre';
 
 
@@ -35,24 +33,6 @@ export class FirebaseService {
     nbdisponible: 0,
     imageCle: "",
     categorieIdcategorie: 0,
-  };
-
-  etudiant = {
-    userIduser: 0,
-    numeroDossier: 0,
-    nom: '',
-    prenom: '',
-    dateNaissance: null,
-    imageCle: "",
-    valide: false,
-    user: null,
-  };
-
-  user: User = {
-    iduser: 0,
-    email: "",
-    password: "",
-    role:""
   };
 
   constructor(private db: AngularFireDatabase, private storage: AngularFireStorage, private data: DatabaseService , private modal : ModalService) { }
@@ -161,67 +141,6 @@ export class FirebaseService {
         );
       })
   }
-  //AJOUTER ETUDIANT
-  //-------------------------------------------------------------------------------------------------------------------------
-  pushFileToStorage1(fileUpload: Image, basePath: string, etudiant: any): Observable<number> {
-    const path = `${basePath}/${fileUpload.file.name + "" + Date.now().toString()}`;
-    const filePath = path;
-    const storageRef = this.storage.ref(filePath);
-    const uploadTask = this.storage.upload(filePath, fileUpload.file);
-
-    uploadTask.snapshotChanges().pipe(
-      finalize(() => {
-        storageRef.getDownloadURL().subscribe(downloadURL => {
-          fileUpload.url = downloadURL;
-          fileUpload.nom = filePath;
-          this.saveEtudiantData(fileUpload, etudiant);
-        });
-      })
-    ).subscribe();
-    return uploadTask.percentageChanges();
-  }
-
-  private saveEtudiantData(fileUpload: Image, etudiant: any): void {
-    this.user.email = etudiant.email;
-    this.user.password = etudiant.password;
-    this.user.role="ROLE_ETUDIANT"
-
-    this.data.addImage(fileUpload).subscribe(img => {
-      this.data.addUser(this.user).subscribe(user => {
-        this.etudiant = etudiant;
-        this.etudiant.imageCle = img.cle;
-        this.etudiant.userIduser = user.iduser;
-        this.data.addEtudiant(this.etudiant).subscribe(res2 => {
-          this.modal.close();
-          this.swalWithBootstrapButtons.fire(
-            "creé!",
-            "Votre compte a ete creé avec succes. veuillez patienter d'ici 24h pour la verifcation de vos informations",
-            "success"
-          );
-        }, err => {
-          this.swalWithBootstrapButtons.fire(
-            "Erreur!",
-            "Une erreur est survenu. Veuillez reessayer plutard!",
-            "error"
-          );
-        });
-      }, err1 => {
-        this.swalWithBootstrapButtons.fire(
-          "erreur!",
-          "Une erreur est survenu lors l'ajout. Veuillez reessayer plutard!",
-          "error"
-        );
-      });
-    }, err2 => {
-      this.swalWithBootstrapButtons.fire(
-        "Erreur!",
-        "Une erreur est survenu. Veuillez reessayer plutard!",
-        "error"
-      );
-    });
-
-  }
-
 
   //RECUPERER DONNEES SUR FIREBASE
   //-------------------------------------------------------------------------------------------------------------------------
@@ -248,7 +167,6 @@ export class FirebaseService {
     const storageRef = this.storage.ref('');
     return storageRef.child(name).delete();
   }
-
 
   //RECUPERER FICHIERS SUR FIREBASE
   //-----------------------------------------------------------------------------------------------------------------------------------

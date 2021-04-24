@@ -58,13 +58,6 @@ export class ReservationsComponent implements OnInit {
     nom: "",
     prenom: "",
     dateNaissance: null,
-    imageCle: {
-      cle: 0,
-      nom: "",
-      url: "",
-      file: null
-    },
-    valide: null,
     dateCreation: null,
     user: null,
     empruntList: null,

@@ -113,7 +113,7 @@
                 </div>
             </div>
             <div id="btn">
-                <button type="submit" [disabled]="form.invalid || form.get('categorieIdcategorie').value==0" class="btn btn-outline-dark">valider</button>
+                <button type="submit" [disabled]="form.invalid || !submit" class="btn btn-outline-dark">valider</button>
             </div>
         </form>
     </div>

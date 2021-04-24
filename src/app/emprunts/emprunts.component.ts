@@ -2,13 +2,11 @@ import { AuthserviceService, Userdetails } from 'src/app/Service/authservice.ser
 import { Etudiant } from './../modeles/etudiant';
 import { Livre } from './../modeles/livre';
 import { Emprunt } from './../modeles/emprunt';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { DatabaseService } from '../Service/database.service';
 import { ModalService } from '../Service/modal.service';
 import Swal from 'sweetalert2';
-import { format } from 'url';
-import { DatePipe } from '@angular/common';
 import { EmailModel } from '../modeles/EmailModel';
 
 @Component({
@@ -17,6 +15,7 @@ import { EmailModel } from '../modeles/EmailModel';
   styleUrls: ['./emprunts.component.css']
 })
 export class EmpruntsComponent implements OnInit {
+
 
   swalWithBootstrapButtons1 = Swal.mixin({
     customClass: {
@@ -59,13 +58,6 @@ export class EmpruntsComponent implements OnInit {
     nom: "",
     prenom: "",
     dateNaissance: null,
-    imageCle: {
-      cle: 0,
-      nom: "",
-      url: "",
-      file: null
-    },
-    valide: null,
     dateCreation: null,
     user: null,
     empruntList: null,
@@ -93,6 +85,7 @@ export class EmpruntsComponent implements OnInit {
     password: ""
   }
   timerInterval: any;
+
   constructor(private modal: ModalService, private data: DatabaseService, private auth: AuthserviceService) { }
 
   ngOnInit(): void {
@@ -345,4 +338,5 @@ export class EmpruntsComponent implements OnInit {
         }
       })
   }
+
 }

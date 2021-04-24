@@ -9,8 +9,6 @@ export interface Etudiant {
   nom: string;
   prenom: string;
   dateNaissance: Date;
-  imageCle: Image;
-  valide: boolean;
   dateCreation: Date;
   user: User;
   empruntList:Emprunt[];

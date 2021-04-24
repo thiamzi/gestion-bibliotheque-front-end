@@ -38,17 +38,12 @@ export class InfosCompteComponent implements OnInit {
   form1: FormGroup;
   verifEtudiant: boolean = false;
   users: User[] = [];
-  etudiants: Etudiant[] = [];
 
   credential = {
     email: "",
     password: ""
   }
 
-  selectedFiles: FileList;
-  currentFileUpload: Image;
-  percentage: number;
-  pathEtudiant = '/etudiants';
 
   valid: boolean = true;
   constructor(private data: DatabaseService, private auth: AuthserviceService, private uploadService: FirebaseService, private build: FormBuilder, private modal: ModalService) { }
@@ -70,21 +65,8 @@ export class InfosCompteComponent implements OnInit {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneEtudiant(res.iduser).subscribe(res3 => {
           this.user = res3;
-          this.getAllEtudiants();
-
-          if (this.user.valide) {
-            this.verifEtudiant = true
-          }
         })
       }
-    })
-    this.form1 = this.build.group({
-      "nom": ['', [Validators.maxLength(30), Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z]*$/)]],
-      "prenom": ['', [Validators.maxLength(30), Validators.required, Validators.minLength(2), Validators.pattern(/^[a-z A-Z]*$/)]],
-      "email": ['', [Validators.pattern(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/), Validators.required]],
-      "numeroDossier": ['', [Validators.required, Validators.pattern(/[0-9]{11}/)]],
-      "dateNaissance": ['', Validators.required],
-      "mdp": ['', Validators.required],
     })
 
     this.form = this.build.group({
@@ -93,10 +75,17 @@ export class InfosCompteComponent implements OnInit {
     }, {
       'validator': MustMatch('password', 'confirm')
     })
+
+    this.form1 = this.build.group({
+      "nom": ['', [Validators.maxLength(30), Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-Z]*$/)]],
+      "prenom": ['', [Validators.maxLength(30), Validators.required, Validators.minLength(2), Validators.pattern(/^[a-z A-Z]*$/)]],
+      "email": ['', [Validators.pattern(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/), Validators.required]],
+      "mdp": ['', Validators.required],
+    })
   }
 
   open2(content2) {
-    if (this.user1.isBibliothecaire || (this.user1.isEtudiant && !this.verifEtudiant)) {
+    if (this.user1.isBibliothecaire) {
       this.form1.patchValue(this.user)
       this.form1.patchValue(this.user.user)
     } else {
@@ -129,44 +118,6 @@ export class InfosCompteComponent implements OnInit {
     }
     else {
       this.data.editUser(this.user.user).subscribe(_ => {
-        if (this.auth.getUserdetails().isEtudiant) {
-          this.user.numeroDossier = this.form1.get("numeroDossier").value;
-          this.user.dateNaissance = this.form1.get("dateNaissance").value;
-          if (this.data.verfierNumdoss1(this.user, this.etudiants)) {
-            this.swalWithBootstrapButtons.fire(
-              "Erreur!",
-              "Le numero de dossier que vous avez entre existe deja",
-              "error"
-            );
-          }
-          else {
-            this.data.editEtudiant(this.user).subscribe(_ => {
-              this.credential.email = this.form1.get("email").value;
-              this.credential.password = this.form1.get("mdp").value;
-              this.auth.connexion(this.credential).subscribe(res => {
-                this.modal.close();
-                this.swalWithBootstrapButtons.fire(
-                  "modifieé!",
-                  "Infos modifiée avec succes.",
-                  "success"
-                );
-                this.ngOnInit();
-              }, err => {
-                this.user.user.email = this.auth.getUserdetails().sub;
-                this.data.editUser(this.user.user).subscribe(_ => {
-                  this.valid = false;
-                })
-              })
-
-            }, err => {
-              this.swalWithBootstrapButtons.fire(
-                "Erreur!",
-                "Une erreur est survenue lors de la modification",
-                "error"
-              );
-            })
-          }
-        }
         if (this.auth.getUserdetails().isBibliothecaire) {
           this.data.editBiblio(this.user).subscribe(_ => {
             this.credential.email = this.form1.get("email").value;
@@ -210,12 +161,6 @@ export class InfosCompteComponent implements OnInit {
     })
   }
 
-  async getAllEtudiants() {
-    this.data.getAllEtudiants().subscribe(res => {
-      this.etudiants = res;
-    });
-  }
-
   updatePassword() {
     console.log()
     this.user.user.password = this.form.get("password").value;
@@ -226,6 +171,7 @@ export class InfosCompteComponent implements OnInit {
         "Mot de passe modifié avec succes.",
         "success"
       );
+      this.ngOnInit();
     }, err => {
       this.swalWithBootstrapButtons.fire(
         "Erreur!",
@@ -235,41 +181,4 @@ export class InfosCompteComponent implements OnInit {
     })
   }
 
-  open4(content1) {
-    this.form1 = this.build.group({
-      "image": ['', Validators.required],
-    })
-    console.log(this.user)
-    this.modal.open(content1)
-  }
-
-  //evenement recuperer un input de type file-------------------------------------------------------------------------------------
-  selectFile(event): void {
-    this.selectedFiles = event.target.files;
-  }
-
-  //Modifier image livre-----------------------------------------------------------------------------------------------------
-  modifierCarteImage() {
-    const file = this.selectedFiles.item(0);
-    this.selectedFiles = undefined;
-
-    this.currentFileUpload = new Image(file);
-    this.uploadService.editFileToStorage(this.currentFileUpload, this.pathEtudiant, this.user).subscribe(
-      percentage => {
-        this.percentage = Math.round(percentage)
-        if (this.percentage == 100) {
-          Swal.fire({
-            position: 'top',
-            icon: 'success',
-            title: 'Image modofiée avec succes',
-            showConfirmButton: false,
-            timer: 3000
-          }).then(() => {
-            this.modal.close();
-            this.percentage = 0;
-          })
-        }
-      }
-    );
-  }
 }

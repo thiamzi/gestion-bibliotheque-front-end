@@ -54,11 +54,14 @@
                                                                 <small>Auteur : {{ livre.auteur}}</small>
                                                             </div>
                                                         </div>
-                                                        <div id="btn">
+                                                        <div id="btn" *ngIf="(reservationCours.dateFin | date : 'd/M/yyyy') > (date | date:'d/M/yyyy')">
                                                             <button (click)="emprunter(livre, etudiant , reservationCours)" class="btn btn-outline-dark">Emprunter</button>
                                                         </div>
-                                                        <div id="btn">
+                                                        <div id="btn" *ngIf="(reservationCours.dateFin | date : 'd/M/yyyy') > (date | date:'d/M/yyyy')">
                                                             <button (click)="annulerReservation(reservationCours.numeroReservation , livre)" class="btn btn-outline-dark">Annuler</button>
+                                                        </div>
+                                                        <div *ngIf="(reservationCours.dateFin | date : 'd/M/yyyy') < (date| date:'d/M/yyyy')" style="margin-top: 10px;">
+                                                            <p style="color: rgb(214, 12, 12); text-align: center;">Vous avez depasse la date de remise du livre</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -109,7 +112,7 @@
 
         </h4>
         <button type="button " class="close " aria-label="Close " (click)="modal.dismiss( 'Cross click') "><span
-  aria-hidden="true ">&times;</span></button>
+        aria-hidden="true ">&times;</span></button>
     </div>
     <div class="container-fluid ">
         <div class="row clearfix justify-content-center ">

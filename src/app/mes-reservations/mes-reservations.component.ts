@@ -35,20 +35,15 @@ export class MesReservationsComponent implements OnInit {
     etudiantUserIduser: 0,
     livreIdlivre: 0
   }
+
   date: Date;
+
   etudiant: Etudiant = {
     userIduser: 0,
     numeroDossier: 0,
     nom: "",
     prenom: "",
     dateNaissance: null,
-    imageCle: {
-      cle: 0,
-      nom: "",
-      url: "",
-      file: null
-    },
-    valide: null,
     dateCreation: null,
     user: null,
     empruntList: null,
@@ -94,13 +89,14 @@ export class MesReservationsComponent implements OnInit {
     password: ""
   }
   reservation: Reservation;
-  reservationCours: Reservation = null;
+  reservationCours: Reservation;
   constructor(private auth: AuthserviceService, private data: DatabaseService, private modal: ModalService) { }
 
   ngOnInit(): void {
     this.date = new Date;
     this.user = this.auth.getUserdetails();
     this.getUser();
+
 
   }
 
@@ -119,8 +115,8 @@ export class MesReservationsComponent implements OnInit {
           for (let i = 0; i < this.etudiant.reservationList.length; i++) {
             if (this.etudiant.reservationList[i].regle == false) {
               this.reservationCours = this.etudiant.reservationList[i];
+              console.log(this.reservationCours)
               this.etudiant.reservationList.splice(i, 1)
-              console.log(this.reservationCours);
             }
           }
           if (this.reservationCours != null) {
@@ -185,13 +181,14 @@ export class MesReservationsComponent implements OnInit {
   }
 
   //emprunter livre----------------------------------------------------------------------------------------------------------------
-  emprunter(livre, etudiant, reservation) {
+  emprunter(livre, etudiant) {
+    console.log(this.reservationCours)
     if (this.NonRegleEmprunt(etudiant.empruntList) == false) {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
           let dateFin: Date = new Date;
           let dateDebut = dateFin;
-          dateFin.setHours(dateFin.getHours() + 24);
+          dateFin.setDate(dateFin.getDate() + 30);
           this.emprunt.dateFin = dateFin;
           dateFin.setDate(dateFin.getDate() + 3);
           this.emprunt.delai_recup = dateFin;
@@ -219,13 +216,14 @@ export class MesReservationsComponent implements OnInit {
                     Swal.showLoading();
                   },
                 })
-                this.data.reglerReservation(reservation).subscribe(rs => {
-                  this.Model.destinataire = etudiant.user.email;
-                  this.Model.message = "Vous venez de faire un emprunt du livre << " + livre.titre + " >>> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
-                  this.Model.numero = this.emprunt.numeroEmprunt.toString();
-                  this.data.sendEmailLivre(this.Model).subscribe(em => {
-                    this.data.editLivre(livre).subscribe(_ => {
-                      this.data.addEmprunt(this.emprunt).subscribe(emp => {
+                this.Model.destinataire = etudiant.user.email;
+                this.Model.message = "Vous venez de faire un emprunt du livre << " + livre.titre + " >>> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
+                this.Model.numero = this.emprunt.numeroEmprunt.toString();
+                this.data.sendEmailLivre(this.Model).subscribe(em => {
+                  this.data.editLivre(livre).subscribe(_ => {
+                    this.data.addEmprunt(this.emprunt).subscribe(emp => {
+                      this.data.reglerReservation(this.reservationCours).subscribe(rs => {
+                        this.reservationCours = null;
                         this.ngOnInit();
                         this.swalWithBootstrapButtons.fire(
                           "Validé!",
@@ -242,7 +240,7 @@ export class MesReservationsComponent implements OnInit {
                     }, err => {
                       this.swalWithBootstrapButtons.fire(
                         "Erreur!",
-                        "Une erreur est survenue lors de l'annulation",
+                        "Une erreur est survenue lors de l'emprunt",
                         "error"
                       );
                     })

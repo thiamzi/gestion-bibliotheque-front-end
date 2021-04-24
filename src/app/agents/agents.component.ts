@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DatabaseService } from '../Service/database.service';
 import Swal from 'sweetalert2';
-import { MustMatch } from '../validator/mustmatch';
 import { EmailModel } from '../modeles/EmailModel';
 
 @Component({
@@ -113,12 +112,15 @@ export class AgentsComponent implements OnInit {
           Swal.showLoading();
         },
       })
-      this.data.sendEmailAgent(this.Model).subscribe(_ => {
+
       this.data.addUser(this.user).subscribe(res => {
-        this.agent.userIduser = res.iduser;
-        this.agent.nom = this.form.get('nom').value;
-        this.agent.prenom = this.form.get('prenom').value;
-        this.data.addAgent(this.agent).subscribe(_ => {
+
+        this.data.sendEmailCompte(this.Model).subscribe(_ => {
+
+          this.agent.userIduser = res.iduser;
+          this.agent.nom = this.form.get('nom').value;
+          this.agent.prenom = this.form.get('prenom').value;
+          this.data.addAgent(this.agent).subscribe(_ => {
             this.ngOnInit()
             this.modal.close()
             this.swalWithBootstrapButtons.fire(
@@ -136,14 +138,14 @@ export class AgentsComponent implements OnInit {
         }, _ => {
           this.swalWithBootstrapButtons.fire(
             "erreur!",
-            "Une erreur est survenu lors l'ajout. Veuillez reessayer plutard!",
+            "Une erreur est survenu lors de l'envoie du mail. Veuillez reessayer plutard!",
             "error"
           );
         })
       }, _ => {
         this.swalWithBootstrapButtons.fire(
           "erreur!",
-          "Une erreur est survenu lors de l'envoie du mail. Veuillez reessayer plutard!",
+          "Une erreur est survenu lors l'ajout. Veuillez reessayer plutard!",
           "error"
         );
       })
@@ -168,7 +170,7 @@ export class AgentsComponent implements OnInit {
             this.getAllAgents();
             this.swalWithBootstrapButtons.fire(
               "Supprimé!",
-              "Categorie supprimée avec succes",
+              "Agent supprimé avec succes",
               "success"
             );
           },

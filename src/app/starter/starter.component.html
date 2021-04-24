@@ -89,12 +89,7 @@
             </div>
 
         </div>
-        <div *ngIf="isEtudiant() && !etudiant.valide" class="modal-footer">
-            <div class="pw_header">
-                <small>Votre compte n'est pas encore validé : vous ne pouvez pas encore faire d'emprunt ou de reservation.</small>
-            </div>
-        </div>
-        <div *ngIf="isEtudiant() && etudiant.valide" class="modal-footer">
+        <div *ngIf="isEtudiant()" class="modal-footer">
             <button class="btn btn-primary" (click)="emprunter(livre)">Emprunter</button>
             <button class="btn btn-primary" (click)="resrever(livre)">Reserver</button>
         </div>

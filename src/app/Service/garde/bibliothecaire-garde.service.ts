@@ -19,7 +19,7 @@ export class BibliothecaireGardeService implements CanActivate {
     if (this.authservice.Islogged() && (this.user.isAdmin || this.user.isBibliothecaire || this.user.isAgent)) {
       return true;
     } else {
-      this.router.navigateByUrl("/accueil");
+      this.router.navigateByUrl("/login");
       return false;
 
     }

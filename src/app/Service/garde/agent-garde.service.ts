@@ -19,7 +19,7 @@ export class AgentGardeService implements CanActivate{
     if (this.authservice.Islogged() && (this.user.isAgent || this.user.isAdmin || this.user.isBibliothecaire)) {
       return true;
     } else {
-      this.router.navigateByUrl("/accueil");
+      this.router.navigateByUrl("/login");
       return false;
     }
   }

@@ -11,10 +11,10 @@ export class GardeService implements CanActivate{
     private authservice: AuthserviceService,
     private router: Router,
   ) {}
+
   canActivate() {
     if (!this.authservice.Islogged()) {
-      this.router.navigateByUrl("/accueil");
-      console.log("non connecter")
+      this.router.navigateByUrl("/login");
       return false;
     } else {
       return true;
