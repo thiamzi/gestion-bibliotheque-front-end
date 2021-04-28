@@ -48,7 +48,7 @@ export class AgentsComponent implements OnInit {
   Model: EmailModel = {
     objet: "Création de compte",
     destinataire: "",
-    message: "Le bibliothecaire a crée un compte agent à votre nom. Les identifiants de votre compte sont ci-dessous.",
+    message: "Le bibliothecaire a crée un compte agent à votre nom. Veuillez cliquer sur le lien suivant pour acceder au plateforme : https://biblioteque-4dc77.web.app/login. Les identifiants de votre compte sont ci-dessous.",
     numero: "",
     password: ""
   }

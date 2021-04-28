@@ -54,7 +54,7 @@ export class EtudiantsComponent implements OnInit {
   Model: EmailModel = {
     objet: "Création de compte",
     destinataire: "",
-    message: "Votre compte a été crée avec succes . Les identifiants de votre compte sont ci-dessous.",
+    message: "Votre compte a été crée avec succes . Veuillez cliquer sur le lien suivant pour acceder au plateforme : https://biblioteque-4dc77.web.app/login .Les identifiants de votre compte sont ci-dessous.",
     numero: "",
     password: ""
   }

@@ -78,7 +78,7 @@ export class EmpruntsComponent implements OnInit {
   }
 
   Model: EmailModel = {
-    objet: "Annulation d'emprunt",
+    objet: "",
     destinataire: "",
     message: "",
     numero: "",
@@ -170,6 +170,7 @@ export class EmpruntsComponent implements OnInit {
             }
           })
           this.data.confirmerEmprunt(emprunt).subscribe(_ => {
+            this.Model.objet="Confirmation emprunt"
             this.Model.destinataire = this.etudiant.user.email;
             this.Model.message = "Votre emprunt qui a pour numero " + emprunt.numeroEmprunt + " vient d'etre confirmé";
             this.data.sendEmailEtudiant(this.Model).subscribe(_ => {
@@ -224,6 +225,7 @@ export class EmpruntsComponent implements OnInit {
           livre.nbdisponible += 1;
           this.data.editLivre(livre).subscribe(res => {
             this.data.reglerEmprunt(emprunt).subscribe(_ => {
+              this.Model.objet="Reglage emprunt"
               this.Model.destinataire = this.etudiant.user.email;
               this.Model.message = "Votre emprunt qui a pour numero " + emprunt.numeroEmprunt + " vient d'etre reglé";
               this.data.sendEmailEtudiant(this.Model).subscribe(_ => {
@@ -339,6 +341,7 @@ export class EmpruntsComponent implements OnInit {
           this.livre.nbdisponible += 1;
           this.data.editLivre(this.livre).subscribe(res1 => {
             this.data.deleteEmprunt(id).subscribe(res => {
+              this.Model.objet="Annulation emprunt"
               this.Model.destinataire = this.etudiant.user.email;
               this.Model.message = "Votre emprunt qui a pour numero " + id + " a ete annulé car le delai de confirmation a été dépasseé";
               this.data.sendEmailEtudiant(this.Model).subscribe(_ => {
