@@ -130,7 +130,7 @@ export class MesEmpruntsComponent implements OnInit {
       .then(result => {
         if (result.value) {
           livre.nbdisponible += 1;
-          this.data.editLivre(livre).subscribe(res1 => {
+         
             this.data.deleteEmprunt(id).subscribe(res => {
               this.empruntCours=null;
               this.ngOnInit();
@@ -146,14 +146,6 @@ export class MesEmpruntsComponent implements OnInit {
                 "error"
               );
             })
-          }, err => {
-            this.swalWithBootstrapButtons.fire(
-              "Erreur!",
-              "Une erreur est survenue lors de l'annulation",
-              "error"
-            );
-          }
-          )
         }
       })
   }

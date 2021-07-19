@@ -186,13 +186,7 @@ export class MesReservationsComponent implements OnInit {
     if (this.NonRegleEmprunt(etudiant.empruntList) == false) {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
-          let dateFin: Date = new Date;
-          let dateDebut = dateFin;
-          dateFin.setDate(dateFin.getDate() + 30);
-          this.emprunt.dateFin = dateFin;
-          dateFin.setDate(dateFin.getDate() + 3);
-          this.emprunt.delai_recup = dateFin;
-          this.emprunt.dateDebut = dateDebut;
+    
           this.emprunt.numeroEmprunt = this.reservationCours.numeroReservation;
           this.emprunt.livreIdlivre = this.livre.idlivre;
           this.emprunt.etudiantUserIduser = res.iduser;
@@ -216,11 +210,8 @@ export class MesReservationsComponent implements OnInit {
                     Swal.showLoading();
                   },
                 })
-                this.Model.destinataire = etudiant.user.email;
-                this.Model.message = "Vous venez de faire un emprunt du livre << " + livre.titre + " >>> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
-                this.Model.numero = this.emprunt.numeroEmprunt.toString();
-                this.data.sendEmailLivre(this.Model).subscribe(em => {
-                  this.data.editLivre(livre).subscribe(_ => {
+   
+              
                     this.data.addEmprunt(this.emprunt).subscribe(emp => {
                       this.data.reglerReservation(this.reservationCours).subscribe(rs => {
                         this.reservationCours = null;
@@ -237,21 +228,8 @@ export class MesReservationsComponent implements OnInit {
                           "error"
                         );
                       })
-                    }, err => {
-                      this.swalWithBootstrapButtons.fire(
-                        "Erreur!",
-                        "Une erreur est survenue lors de l'emprunt",
-                        "error"
-                      );
-                    })
-                  },
-                    err => {
-                      this.swalWithBootstrapButtons.fire(
-                        "Erreur!",
-                        "Une erreur est survenue lors de l'emprunt",
-                        "error"
-                      );
-                    });
+              
+                 
                 },
                   err => {
                     console.log(err)

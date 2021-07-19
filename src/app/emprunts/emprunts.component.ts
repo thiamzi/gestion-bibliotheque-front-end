@@ -170,10 +170,6 @@ export class EmpruntsComponent implements OnInit {
             }
           })
           this.data.confirmerEmprunt(emprunt).subscribe(_ => {
-            this.Model.objet="Confirmation emprunt"
-            this.Model.destinataire = this.etudiant.user.email;
-            this.Model.message = "Votre emprunt qui a pour numero " + emprunt.numeroEmprunt + " vient d'etre confirmé";
-            this.data.sendEmailEtudiant(this.Model).subscribe(_ => {
             this.ngOnInit();
             this.modal.close();
             this.swalWithBootstrapButtons.fire(
@@ -181,14 +177,6 @@ export class EmpruntsComponent implements OnInit {
               "Emprunt confirmer avec succes",
               "success"
             );
-          },
-            err => {
-              this.swalWithBootstrapButtons.fire(
-                "Erreur!",
-                "Une erreur est survenue lors de l'operation",
-                "error"
-              );
-            });
           },
           err => {
             this.swalWithBootstrapButtons.fire(
@@ -222,13 +210,7 @@ export class EmpruntsComponent implements OnInit {
               Swal.showLoading();
             }
           })
-          livre.nbdisponible += 1;
-          this.data.editLivre(livre).subscribe(res => {
             this.data.reglerEmprunt(emprunt).subscribe(_ => {
-              this.Model.objet="Reglage emprunt"
-              this.Model.destinataire = this.etudiant.user.email;
-              this.Model.message = "Votre emprunt qui a pour numero " + emprunt.numeroEmprunt + " vient d'etre reglé";
-              this.data.sendEmailEtudiant(this.Model).subscribe(_ => {
               this.modal.close();
               this.swalWithBootstrapButtons.fire(
                 "reglée!",
@@ -237,22 +219,6 @@ export class EmpruntsComponent implements OnInit {
               );
               this.ngOnInit();
             },
-              err => {
-                this.swalWithBootstrapButtons.fire(
-                  "Erreur!",
-                  "Une erreur est survenue lors de l'operation",
-                  "error"
-                );
-              })
-            },
-            err => {
-              this.swalWithBootstrapButtons.fire(
-                "Erreur!",
-                "Une erreur est survenue lors de l'operation",
-                "error"
-              );
-            })
-          },
             err => {
               this.swalWithBootstrapButtons.fire(
                 "Erreur!",

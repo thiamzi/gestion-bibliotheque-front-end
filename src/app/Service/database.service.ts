@@ -228,10 +228,6 @@ public oneBiblio(id): Observable<Bibliothecaire> {
     return this.http.post(`${this.url}emailcompte`, email);
   }
 
-  public sendEmailLivre(email : any): Observable<any> {
-    return this.http.post(`${this.url}emaillivre`, email);
-  }
-
 
 
   verfierNumdoss(num: string, objects: any[]) {

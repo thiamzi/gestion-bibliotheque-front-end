@@ -56,14 +56,6 @@ export class StarterComponent implements OnInit {
   livre: Livre = null;
   livresrecup: Livre[] = []
 
-  Model: EmailModel = {
-    objet: "",
-    destinataire: "",
-    message: "",
-    numero: "",
-    password: ""
-  }
-
   etudiant: Etudiant = {
     userIduser: 0,
     numeroDossier: 0,
@@ -153,16 +145,8 @@ export class StarterComponent implements OnInit {
     if (this.NonRegleEmprunt(this.etudiant.empruntList) == false) {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
-          let dateFin: Date = new Date;
-          let dateDebut = dateFin;
-          dateFin.setDate(dateFin.getDate() + 30);
-          this.emprunt.dateFin = dateFin;
-          dateFin.setDate(dateFin.getDate() + 3);
-          this.emprunt.delai_recup = dateFin;
-          this.emprunt.dateDebut = dateDebut;
           this.emprunt.numeroEmprunt = this.data.genererNumero();
           this.emprunt.livreIdlivre = livre.idlivre;
-          livre.nbdisponible -= 1;
           this.emprunt.etudiantUserIduser = res.iduser;
 
           this.swalWithBootstrapButtons1
@@ -184,13 +168,8 @@ export class StarterComponent implements OnInit {
                     Swal.showLoading();
                   },
                 })
-                this.Model.objet = "Emprunt livre";
-                this.Model.destinataire = this.etudiant.user.email;
-                this.Model.message = "Vous venez de faire un emprunt du livre << "+ livre.titre +" >> Vous avez 3 jours pour venir recuperer le livre pour que l'emprunt soit confirmer. Au dela du delai l'emprunt sera systematiquement annulé.";
-                this.Model.numero = this.emprunt.numeroEmprunt.toString();
-                this.data.sendEmailLivre(this.Model).subscribe(_ => {
-                this.data.editLivre(livre).subscribe(_ => {
-                  this.data.addEmprunt(this.emprunt).subscribe(emprunt => {
+           
+                  this.data.addEmprunt(this.emprunt).subscribe(_ => {
                       this.modal.close();
                       this.ngOnInit();
                       this.swalWithBootstrapButtons.fire(
@@ -198,21 +177,7 @@ export class StarterComponent implements OnInit {
                         "Emprunt reussi avec succes!! Vous allez recevoir un email pour plus de details.",
                         "success"
                       );
-                    }, err => {
-                      this.swalWithBootstrapButtons.fire(
-                        "Erreur!",
-                        "Une erreur est survenue lors de l'annulation",
-                        "error"
-                      );
-                    })
-                  },
-                    err => {
-                      this.swalWithBootstrapButtons.fire(
-                        "Erreur!",
-                        "Une erreur est survenue lors de l'emprunt",
-                        "error"
-                      );
-                    });
+                 
                 },
                   err => {
                     console.log(err)
@@ -247,11 +212,7 @@ export class StarterComponent implements OnInit {
     if (!this.NonRegleReservation(this.etudiant.reservationList)) {
       if (this.auth.getUserdetails().isEtudiant) {
         this.data.oneUser(this.auth.getUserdetails().sub).subscribe(res => {
-          let dateFin: Date = new Date;
-          dateFin.setDate(dateFin.getDate() + 10);
-          this.reservation.dateFin = dateFin;
           this.reservation.numeroReservation = this.data.genererNumero();
-          livre.nbdisponible -= 1;
           this.reservation.livreIdlivre = livre.idlivre;
           this.reservation.etudiantUserIduser = res.iduser;
 
@@ -274,12 +235,6 @@ export class StarterComponent implements OnInit {
                     Swal.showLoading();
                   },
                 })
-                this.Model.objet = "Réservation livre"
-                this.Model.destinataire = this.etudiant.user.email;
-                this.Model.message = "Vous venez de faire une réservation du livre << "+ livre.titre +" >> Vous avez 10 jours pour regler la réservation. Au dela du delai la réservation sera systematiquement annulée.";
-                this.Model.numero = this.reservation.numeroReservation.toString();
-                this.data.sendEmailLivre(this.Model).subscribe(_ => {
-                this.data.editLivre(livre).subscribe(_ => {
                   this.data.addReservation(this.reservation).subscribe(reservation => {
                     this.modal.close();
                     this.ngOnInit();
@@ -296,22 +251,8 @@ export class StarterComponent implements OnInit {
                         "error"
                       );
                     })
-                  },
-                    err => {
-                      this.swalWithBootstrapButtons.fire(
-                        "Erreur!",
-                        "Une erreur est survenue lors de la réservation",
-                        "error"
-                      );
-                    });
-                },
-                  err => {
-                    this.swalWithBootstrapButtons.fire(
-                      "Erreur!",
-                      "Une erreur est survenue lors de la réservation",
-                      "error"
-                    );
-                  })
+                
+            
               }
             });
 
