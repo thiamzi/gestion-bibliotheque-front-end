@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'bibliothequeuniv'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E7C87FE002484998BC7BFE4F2B247E8F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FE8B42A53A7C42329F6A10D7BD1472CB }}
           package: .
